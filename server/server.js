@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 
 const openai = new OpenAI(process.env.OPENAI_API_KEY); // Make sure to set this in your .env
 
-app.post('/api', async (req, res) => {
+app.post('/', async (req, res) => {
   const { emotion } = req.body;
   
   // Replace the messages below with the context you want to send to OpenAI API based on the emotion

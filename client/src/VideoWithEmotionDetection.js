@@ -63,7 +63,7 @@ const VideoWithEmotionDetection = ({ onGenerateContent }) => {
   // Function to send the detected emotion to the backend
   const sendEmotionToBackend = async (detectedEmotion) => {
     try {
-      const response = await fetch('/api/emotion', {
+      const response = await fetch('/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
