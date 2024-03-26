@@ -1,8 +1,10 @@
 .video-container {
   position: relative;
   width: 720px;
-  height: 560px;
+  height: 540px;
   overflow: hidden;
+  margin: auto;
+  border: black 1px solid;
 }
 
 .video-container video {
@@ -20,4 +22,52 @@
   width: 100%;
   height: 100%;
   z-index: 10; 
+}
+
+.conversation-area {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.message {
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.message.user {
+  background-color: #e0e0e0;
+  align-self: flex-end;
+}
+
+.message.ai {
+  background-color: #add8e6;
+  align-self: flex-start;
+}
+
+.input-area {
+  display: flex;
+  margin-top: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-area button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
 }
