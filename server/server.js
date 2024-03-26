@@ -1,35 +1,37 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import OpenAI from 'openai';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
-app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
-const openai = new OpenAI(process.env.OPENAI_API_KEY); // Make sure to set this in your .env
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
-app.post('/', async (req, res) => {
-  const { emotion } = req.body;
+app.post('/api/chat', async (req, res) => {
+  const { emotion} = req.body;
   
-  // Replace the messages below with the context you want to send to OpenAI API based on the emotion
-  const messages = [
-    {"role": "user", "content": `I feel ${emotion}. What content can you generate for me?`},
-    // Add more context if necessary
-  ];
-  
+  const messages = `I feel ${emotion} . What content can you generate for me?`;
+
   try {
-    const completion = await openai.createChatCompletion({
-      model: "gpt-4-turbo-preview",
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4-turbo-preview", // or another available model
       messages: messages,
+      max_tokens: 150
     });
 
     res.json({ generatedContent: completion.choices[0].message.content });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error generating content');
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Error generating content', error: error.message });
   }
 });
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running at http://localhost:${PORT}`);
 });

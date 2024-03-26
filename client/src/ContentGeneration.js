@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-const ContentGeneration = ({ emotion }) => {
+const ContentGeneration = ({ handleNewGeneratedContent }) => {
+  const [userInput, setUserInput] = useState('');
   const [content, setContent] = useState('');
-
+  
   const getContent = async () => {
     try {
       const response = await fetch('/generate-content', {
@@ -10,7 +11,7 @@ const ContentGeneration = ({ emotion }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ emotion }),
+        body: JSON.stringify({ emotion: userInput }), // Send the user input as emotion
       });
       const data = await response.json();
       setContent(data.generatedContent);
@@ -21,6 +22,11 @@ const ContentGeneration = ({ emotion }) => {
 
   return (
     <div>
+      <input
+        value={userInput}
+        onChange={(e) => setUserInput(e.target.value)}
+        placeholder="Enter your emotion"
+      />
       <button onClick={getContent}>Generate Content</button>
       <p>{content}</p>
     </div>

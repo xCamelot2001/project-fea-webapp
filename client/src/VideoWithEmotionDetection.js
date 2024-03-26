@@ -55,15 +55,15 @@ const VideoWithEmotionDetection = ({ onGenerateContent }) => {
             setEmotion(highestEmotion); // Store the highest probability emotion
             sendEmotionToBackend(highestEmotion); // Send emotion to backend
           }
-        }, 100);
+        }, 1000);
       }
     });
-  }, [emotion]);
+  }, []);
 
   // Function to send the detected emotion to the backend
   const sendEmotionToBackend = async (detectedEmotion) => {
     try {
-      const response = await fetch('/', {
+      const response = await fetch('/generate-content', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
