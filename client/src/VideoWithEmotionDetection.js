@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as faceapi from 'face-api.js';
 import './App.css';
 
-const VideoWithEmotionDetection = ({ onGenerateContent }) => {
+const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
   const videoRef = useRef();
   const canvasRef = useRef();
   const [emotion, setEmotion] = useState('');
@@ -33,10 +33,9 @@ const VideoWithEmotionDetection = ({ onGenerateContent }) => {
   useEffect(() => {
     const video = videoRef.current;
 
-    video.addEventListener('play', () => {
-      const displaySize = { width: video.width, height: video.height };
-
-      if (canvasRef.current) {
+    if (video) {
+      video.addEventListener('play', () => {
+        const displaySize = { width: video.width, height: video.height };
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
         setInterval(async () => {
@@ -48,34 +47,17 @@ const VideoWithEmotionDetection = ({ onGenerateContent }) => {
           faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
           faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
 
-          // Find the highest probability emotion
           const expressions = resizedDetections.map(fd => fd.expressions);
           const highestEmotion = expressions.map(e => Object.keys(e).reduce((a, b) => e[a] > e[b] ? a : b))[0];
+
           if (highestEmotion !== emotion) {
-            setEmotion(highestEmotion); // Store the highest probability emotion
-            sendEmotionToBackend(highestEmotion); // Send emotion to backend
+            setEmotion(highestEmotion);
+            onEmotionDetected(highestEmotion);
           }
         }, 1000);
-      }
-    });
-  }, []);
-
-  // Function to send the detected emotion to the backend
-  const sendEmotionToBackend = async (detectedEmotion) => {
-    try {
-      const response = await fetch('/generate-content', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ emotion: detectedEmotion }),
       });
-      const data = await response.json();
-      onGenerateContent(data.generatedContent); // Invoke the callback with the generated content
-    } catch (error) {
-      console.error('Error sending emotion to backend:', error);
     }
-  };
+  }, [emotion, onEmotionDetected]);
 
   return (
     <div className='video-container'>

@@ -13,15 +13,17 @@ const openai = new OpenAI({
 });
 
 app.post('/api/chat', async (req, res) => {
-  const { emotion} = req.body;
-  
-  const messages = `I feel ${emotion} . What content can you generate for me?`;
+  const { prompt, emotion } = req.body;
+  const messageContent = emotion ? `I feel ${emotion}. ${prompt}` : prompt;
+  const messages = [
+    { role: 'user', content: messageContent },
+  ];
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4-turbo-preview", // or another available model
+      model: "gpt-4-0125-preview",
       messages: messages,
-      max_tokens: 150
+      max_tokens: 500
     });
 
     res.json({ generatedContent: completion.choices[0].message.content });
