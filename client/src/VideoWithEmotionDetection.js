@@ -2,10 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as faceapi from 'face-api.js';
 import './App.css';
 
-const VideoWithEmotionDetection = ({ onGenerateContent }) => {
+const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
   const videoRef = useRef();
   const canvasRef = useRef();
   const [emotion, setEmotion] = useState('');
+  const intervalRef = useRef();
 
   useEffect(() => {
     const loadModels = async () => {
@@ -22,60 +23,67 @@ const VideoWithEmotionDetection = ({ onGenerateContent }) => {
     const startVideo = () => {
       navigator.mediaDevices.getUserMedia({ video: {} })
         .then(stream => {
-          videoRef.current.srcObject = stream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
         })
         .catch(err => console.error(err));
     };
 
     loadModels();
+    
+    // Cleanup function to stop the video when unmounting
+
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-
-    video.addEventListener('play', () => {
+    
+    const onPlay = () => {
       const displaySize = { width: video.width, height: video.height };
+      faceapi.matchDimensions(canvasRef.current, displaySize);
+      
+      intervalRef.current = setInterval(async () => {
+        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+          .withFaceLandmarks()
+          .withFaceExpressions();
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvasRef.current.getContext('2d').clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+        faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
 
-      if (canvasRef.current) {
-        faceapi.matchDimensions(canvasRef.current, displaySize);
+        const expressions = resizedDetections.map(fd => fd.expressions);
+        const highestEmotion = expressions.map(e => Object.keys(e).reduce((a, b) => e[a] > e[b] ? a : b))[0];
 
-        setInterval(async () => {
-          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-            .withFaceLandmarks()
-            .withFaceExpressions();
-          const resizedDetections = faceapi.resizeResults(detections, displaySize);
-          canvasRef.current.getContext('2d').clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-          faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-          faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+        if (highestEmotion !== emotion) {
+          setEmotion(highestEmotion);
+          onEmotionDetected(highestEmotion);
+        }
+      }, 1000);
+    };
 
-          // Find the highest probability emotion
-          const expressions = resizedDetections.map(fd => fd.expressions);
-          const highestEmotion = expressions.map(e => Object.keys(e).reduce((a, b) => e[a] > e[b] ? a : b))[0];
-          if (highestEmotion !== emotion) {
-            setEmotion(highestEmotion); // Store the highest probability emotion
-            sendEmotionToBackend(highestEmotion); // Send emotion to backend
-          }
-        }, 100);
-      }
-    });
-  }, [emotion]);
-
-  // Function to send the detected emotion to the backend
-  const sendEmotionToBackend = async (detectedEmotion) => {
-    try {
-      const response = await fetch('/api/emotion', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ emotion: detectedEmotion }),
-      });
-      const data = await response.json();
-      onGenerateContent(data.generatedContent); // Invoke the callback with the generated content
-    } catch (error) {
-      console.error('Error sending emotion to backend:', error);
+    if (video) {
+      video.addEventListener('play', onPlay);
     }
-  };
+
+    // Cleanup function to clear interval and remove event listener
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      if (video) {
+        video.removeEventListener('play', onPlay);
+      }
+    };
+  }, [onEmotionDetected]);
 
   return (
     <div className='video-container'>
