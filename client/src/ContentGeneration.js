@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import VideoWithEmotionDetection from './VideoWithEmotionDetection';
+import ReactMarkdown from 'react-markdown';
 
 const ContentGeneration = () => {
   const [userInput, setUserInput] = useState('');
@@ -22,27 +23,6 @@ const ContentGeneration = () => {
     }
   };
 
-  // Function to render content based on its type
-  const renderContent = () => {
-    // Assuming that 'content' could be an object containing type and value
-    if (typeof content === 'string') {
-      return <p>{content}</p>;
-    } else if (content.type === 'link') {
-      return <a href={content.value} target="_blank" rel="noopener noreferrer">{content.text}</a>;
-    } else if (content.type === 'video') {
-      return (
-        <iframe
-          width="560"
-          height="315"
-          src={content.value}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          title="Video content"
-        ></iframe>
-      );
-    }
-  };
-
   return (
     <div>
       <VideoWithEmotionDetection onEmotionDetected={setEmotion} />
@@ -57,7 +37,7 @@ const ContentGeneration = () => {
         <button onClick={getContent}>Generate Content</button>
       </div>
       <div className="content-area">
-        {renderContent()}
+        <ReactMarkdown>{content}</ReactMarkdown>
       </div>
     </div>
   );

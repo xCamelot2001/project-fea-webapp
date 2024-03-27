@@ -4,7 +4,7 @@ import ContentGeneration from './ContentGeneration';
 const Home = () => {
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1>ExprEssence</h1>
       <ContentGeneration />
     </div>
   );
