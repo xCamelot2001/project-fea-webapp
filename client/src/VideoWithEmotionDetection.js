@@ -67,7 +67,7 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
           setEmotion(highestEmotion);
           onEmotionDetected(highestEmotion);
         }
-      }, 500);
+      }, 1000);
     };
 
     if (video) {
