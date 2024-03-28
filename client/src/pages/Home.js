@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ContentGeneration from './ContentGeneration';
+import ContentGeneration from '../features/ContentGeneration';
 
 const Home = () => {
   const [content, setContent] = useState(''); // Initialize the content state

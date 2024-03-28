@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './Header';
-import Home from './Home';
-import About from './About';
-import Contact from './Contact';
-import './App.css';
+import Header from './components/layout/Header';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import '../src/assests/styles/App.css';
 
 const App = () => {
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import * as faceapi from 'face-api.js';
-import './App.css';
+import '/Users/camelot/project-fea-3/client/src/assests/styles/App.css'
 
 const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
   const videoRef = useRef();
