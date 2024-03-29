@@ -1,48 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VideoWithEmotionDetection from './VideoWithEmotionDetection';
 
 const EmotionDetector = ({ onEmotionDetected }) => {
   const [greeting, setGreeting] = useState('');
-  const [hasGreeted, setHasGreeted] = useState(false);
+  const hasGreeted = useRef(false);
 
   // Greeting messages based on user's emotion
   const emotionGreetings = {
-    happy: "It's great to see you happy! What can we do to keep the good vibes going?",
-    sad: "Feeling down? Let's find something to brighten your day.",
-    surprised: "Wow, you seem surprised! Shall we explore more?",
-    neutral: "Just another regular day? Let's make it interesting.",
-    disgusted: "Oops, something seems to have upset you. How about we turn that frown upside down?",
-    angry: "You seem a bit tense. Let's take a moment to relax and regroup.",
-    fearful: "It's okay to feel scared sometimes. Let's find a way to make you feel safe and comfortable."
+    happy: "It's great to see you happy!",
+    sad: "Feeling down?",
+    surprised: "Wow, you seem surprised!",
+    neutral: "Just another regular day?",
+    disgusted: "Oops, something seems to have upset you.",
+    angry: "You seem a bit tense.",
+    fearful: "It's okay to feel scared sometimes."
   };
 
   // Function to fetch the greeting message
   const getGreeting = (currentEmotion) => {
-    const hours = new Date().getHours();
-    return currentEmotion && emotionGreetings[currentEmotion]
-      ? emotionGreetings[currentEmotion]
-      : hours < 12
-      ? "Good morning! Let's get started."
-      : hours < 18
-      ? "Good afternoon! Ready for some creativity?"
-      : "Good evening! Time to wind down.";
+    const timeOfDay = getTimeOfDayGreeting();
+    return timeOfDay + (emotionGreetings[currentEmotion] || "How are you today?");
   };
 
+  // Function to get time of day greeting
+  const getTimeOfDayGreeting = () => {
+    const hours = new Date().getHours();
+    return hours < 12 ? "Good morning! " : hours < 18 ? "Good afternoon! " : "Good evening! ";
+  };
+
+  // Initialize with a time of day greeting
   useEffect(() => {
-    if (!hasGreeted) {
-      const currentEmotion = onEmotionDetected();
-      setGreeting(getGreeting(currentEmotion));
-      setHasGreeted(true);
+    setGreeting(getTimeOfDayGreeting());
+  }, []);
+
+  const handleEmotionDetected = (emotion) => {
+    if (!hasGreeted.current) {
+      setGreeting(g => g + (emotionGreetings[emotion] || "How are you today?"));
+      hasGreeted.current = true;
+      onEmotionDetected(emotion);
     }
-  }, [onEmotionDetected, hasGreeted]);
+  };
 
   return (
-    <>
-      <VideoWithEmotionDetection onEmotionDetected={onEmotionDetected} />
+    <div>
+      <VideoWithEmotionDetection onEmotionDetected={handleEmotionDetected} />
       <div className="greeting-message">
-        <h2>{greeting}</h2>
+        {hasGreeted.current ? <h2>{greeting}</h2> : null}
       </div>
-    </>
+    </div>
   );
 };
 
