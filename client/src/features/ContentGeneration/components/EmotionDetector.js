@@ -16,12 +16,6 @@ const EmotionDetector = ({ onEmotionDetected }) => {
     fearful: "It's okay to feel scared sometimes."
   };
 
-  // Function to fetch the greeting message
-  const getGreeting = (currentEmotion) => {
-    const timeOfDay = getTimeOfDayGreeting();
-    return timeOfDay + (emotionGreetings[currentEmotion] || "How are you today?");
-  };
-
   // Function to get time of day greeting
   const getTimeOfDayGreeting = () => {
     const hours = new Date().getHours();
@@ -33,6 +27,7 @@ const EmotionDetector = ({ onEmotionDetected }) => {
     setGreeting(getTimeOfDayGreeting());
   }, []);
 
+  // Function to handle emotion detection
   const handleEmotionDetected = (emotion) => {
     if (!hasGreeted.current) {
       setGreeting(g => g + (emotionGreetings[emotion] || "How are you today?"));

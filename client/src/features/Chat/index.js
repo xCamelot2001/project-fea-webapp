@@ -11,7 +11,6 @@ const ChatBox = () => {
     setConversation([...conversation, { type: 'text', content: message }]);
     setMessage('');
     
-    // Here you can also send the message to the backend if needed
   };
 
   return (
