@@ -1,25 +1,43 @@
 import React, { useState } from 'react';
+import { fetchYouTubeLinks, fetchSearchResults } from '../../services/apiService';
 
-const ChatBox = () => {
+const ChatBox = ({ emotion }) => {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message.trim() === '') return;
     
-    // Add the message to the conversation and reset the input
-    setConversation([...conversation, { type: 'text', content: message }]);
+    setConversation('text', message);
     setMessage('');
-    
+  
+    try {
+      // Fetch YouTube links and add to the conversation
+      const youtubeResponse = await fetchYouTubeLinks(emotion);
+      if (youtubeResponse.data.links) {
+        setConversation('video', youtubeResponse.data.links);
+      }
+  
+      // Fetch search results and add to the conversation
+      const searchResponse = await fetchSearchResults(emotion);
+      if (searchResponse.data.links) {
+        setConversation('link', searchResponse.data.links);
+      }
+    } catch (error) {
+      console.error('Error fetching content:', error);
+      // Optionally, update the UI to inform the user that an error occurred.
+      setConversation('error', 'An error occurred while fetching content.');
+    }
   };
 
   return (
     <div className="chatbox-container">
       <div className="messages">
         {conversation.map((m, index) => (
-          <div key={index} className="message">
+          <div key={index} className={`message ${m.type}`}>
             {m.type === 'text' && <p>{m.content}</p>}
-            {/* Implement handlers for other types like 'link' or 'image' */}
+            {m.type === 'video' && m.content.map((url, idx) => <div key={idx}><a href={url} target="_blank" rel="noopener noreferrer">YouTube Video</a></div>)}
+            {m.type === 'link' && m.content.map((url, idx) => <div key={idx}><a href={url} target="_blank" rel="noopener noreferrer">Related Article</a></div>)}
           </div>
         ))}
       </div>
