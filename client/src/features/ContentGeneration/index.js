@@ -1,21 +1,21 @@
 import React, { useState } from "react";
+import EmotionDetector from "./components/EmotionDetector";
+import CategorySelector from "./components/CategorySelector";
+import ContentTypeSelector from "./components/ContentTypeSelector";
+import Message from "./components/Message";
+import InputArea from "./components/InputArea";
 import {
   fetchYouTubeLinks,
   fetchSearchResults,
   fetchGeneratedContent,
 } from "../../services/apiService";
-import EmotionDetector from "./components/EmotionDetector";
-import CategorySelector from "./components/CategorySelector";
-import ContentTypeSelector from "./components/ContentTypeSelector";
-import ContentDisplay from "./components/ContentDisplay";
 
 const IntegratedComponent = () => {
   const [userInput, setUserInput] = useState("");
-  const [content, setContent] = useState("");
-  const [emotion, setEmotion] = useState("neutral");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [contentOptions, setContentOptions] = useState({});
   const [conversation, setConversation] = useState([]);
+  const [emotion, setEmotion] = useState("neutral");
 
   const contentTypes = {
     fun: {
@@ -41,55 +41,31 @@ const IntegratedComponent = () => {
   };
 
   const handleContentTypeSelect = (prompt) => {
-    setUserInput(prompt);
-    getContent(prompt, emotion);
+    sendMessage(prompt);
   };
 
-  const sendMessage = async () => {
-    if (userInput.trim() === "") return;
+  const sendMessage = async (prompt) => {
+    if (prompt.trim() === "") return;
 
-    setConversation((prev) => [...prev, { type: "text", content: userInput }]);
-    setUserInput("");
+    setConversation((prev) => [...prev, { type: "text", content: prompt }]);
 
     try {
       const youtubeResponse = await fetchYouTubeLinks(emotion);
-      if (youtubeResponse.data.links) {
-        setConversation((prev) => [
-          ...prev,
-          { type: "video", content: youtubeResponse.data.links },
-        ]);
-      } else {
-        console.log("No youtube links found");
-      }
-
       const searchResponse = await fetchSearchResults(emotion);
-      if (searchResponse.data.links) {
-        setConversation((prev) => [
-          ...prev,
-          { type: "link", content: searchResponse.data.links },
-        ]);
-      } else {
-        console.log("No search results found");
-      }
+      const contentResponse = await fetchGeneratedContent(prompt, emotion);
+
+      setConversation((prev) => [
+        ...prev,
+        { type: "video", content: youtubeResponse.data.links },
+        { type: "link", content: searchResponse.data.links },
+        { type: "generated", content: contentResponse.data.generatedContent },
+      ]);
     } catch (error) {
       console.error("Error fetching content:", error);
       setConversation((prev) => [
         ...prev,
         { type: "error", content: "An error occurred while fetching content." },
       ]);
-    }
-  };
-
-  const getContent = async (prompt, currentEmotion) => {
-    try {
-      const response = await fetchGeneratedContent(prompt, currentEmotion);
-      setContent(response.data.generatedContent);
-      setConversation((prev) => [
-        ...prev,
-        { type: "generated", content: response.data.generatedContent },
-      ]);
-    } catch (error) {
-      console.error("Error fetching generated content:", error);
     }
   };
 
@@ -109,38 +85,14 @@ const IntegratedComponent = () => {
       <div className="chatbox-container">
         <div className="messages">
           {conversation.map((m, index) => (
-            <div key={index} className={`message ${m.type}`}>
-              {m.type === "text" && <p>{m.content}</p>}
-              {m.type === "video" &&
-                m.content.map((url, idx) => (
-                  <div key={idx}>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                      YouTube Video
-                    </a>
-                  </div>
-                ))}
-              {m.type === "link" &&
-                m.content.map((url, idx) => (
-                  <div key={idx}>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                      Related Article
-                    </a>
-                  </div>
-                ))}
-              {m.type === "generated" && <ContentDisplay content={m.content} />}
-            </div>
+            <Message key={index} message={m} />
           ))}
         </div>
-        <div className="input-area">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Type your message..."
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
+        <InputArea
+          userInput={userInput}
+          setUserInput={setUserInput}
+          sendMessage={() => sendMessage(userInput)}
+        />
       </div>
     </div>
   );
