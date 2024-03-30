@@ -90,7 +90,7 @@ nav a:hover {
 }
 
 .messages {
-  max-height: 300px;
+  max-height: 500px;
   overflow-y: auto;
 }
 
@@ -175,4 +175,110 @@ nav a:hover {
 .video-container canvas {
   /* Set the canvas to be on top of the video */
   z-index: 10;
+}
+
+/* Category Buttons Styling */
+.category-selection button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: #4CAF50; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 20px; /* Rounded borders for buttons */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* subtle shadow for depth */
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-selection button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Video Thumbnail Styling */
+.video {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.video img {
+  width: 120px; /* Set a fixed width for consistency */
+  height: 67.5px; /* Set height based on a 16:9 aspect ratio */
+  margin-right: 1rem;
+  border-radius: 4px;
+}
+
+.video div {
+  flex-grow: 1;
+}
+
+/* Article Link Styling */
+.article {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.article a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.article a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design for Video and Article containers */
+@media (max-width: 768px) {
+  .video img {
+    width: 100%; /* Full width on smaller screens */
+    height: auto; /* Adjust height automatically */
+  }
+
+  .video, .article {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Category Buttons Styling based on the image */
+.category-selection button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: #4CAF50; /* Green background, you can adjust the color to match the image */
+  color: white;
+  border: 1px solid #ddd; /* Grey border, you might want to adjust this to match the image */
+  border-radius: 0; /* Square edges */
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.category-selection button:hover {
+  background-color: #367c39; /* Darker green on hover, adjust to your preference */
+  color: #f9fafc;
+}
+
+/* Subcategory Buttons Styling */
+.content-type-selection button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: #e9f5e9; /* Light green background */
+  color: #245724; /* Dark green text color */
+  border: 1px solid #c3e6c3; /* Light green border */
+  border-radius: 0; /* Square edges */
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.content-type-selection button:hover {
+  background-color: #d0e6d0; /* Slightly darker green background on hover */
+  color: #1d4621; /* Slightly darker green text on hover */
+}
+
+/* Apply a distinct style for the selected subcategory button if needed */
+.content-type-selection button.selected {
+  background-color: #4CAF50; /* Green background for selected button */
+  color: white; /* White text for selected button */
+  border: 1px solid #367c39; /* Darker green border for selected button */
 }

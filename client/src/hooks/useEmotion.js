@@ -5,3 +5,5 @@ const useEmotion = (initialEmotion = 'neutral') => {
     const [emotion, setEmotion] = useState("");
     return { emotion, setEmotion };
     }
+
+export default useEmotion;

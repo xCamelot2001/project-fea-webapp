@@ -50,8 +50,8 @@ const IntegratedComponent = () => {
     setConversation((prev) => [...prev, { type: "text", content: prompt }]);
 
     try {
-      const youtubeResponse = await fetchYouTubeLinks(emotion);
-      const searchResponse = await fetchSearchResults(emotion);
+      const youtubeResponse = await fetchYouTubeLinks(prompt, emotion);
+      const searchResponse = await fetchSearchResults(prompt, emotion);
       const contentResponse = await fetchGeneratedContent(prompt, emotion);
 
       setConversation((prev) => [

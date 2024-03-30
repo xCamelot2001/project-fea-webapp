@@ -8,18 +8,19 @@ const Message = ({ message }) => {
       case "text":
         return <p>{message.content}</p>;
       case "video":
-        return message.content.map((url, idx) => (
-          <div key={idx}>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              YouTube Video
+        return message.content.map((video, idx) => (
+          <div key={idx} className="video">
+            <a href={video.url} target="_blank" rel="noopener noreferrer">
+              <img src={video.thumbnail} alt={video.title} />
+              <div>{video.title}</div>
             </a>
           </div>
         ));
       case "link":
-        return message.content.map((url, idx) => (
-          <div key={idx}>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              Related Article
+        return message.content.map((article, idx) => (
+          <div key={idx} className="article">
+            <a href={article.url} target="_blank" rel="noopener noreferrer">
+              {article.title}
             </a>
           </div>
         ));
