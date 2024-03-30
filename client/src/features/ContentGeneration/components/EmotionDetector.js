@@ -39,7 +39,7 @@ const EmotionDetector = ({ onEmotionDetected }) => {
   return (
     <div>
       <VideoWithEmotionDetection onEmotionDetected={handleEmotionDetected} />
-      <div className="greeting-message">
+      <div className="greeting">
         {hasGreeted.current ? <h2>{greeting}</h2> : null}
       </div>
     </div>
