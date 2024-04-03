@@ -218,16 +218,30 @@ nav a:hover {
 }
 
 .message.video .video {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  display: flex; /* Use flexbox to align items side by side */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 1rem; /* Add some space between the video entries */
+  background: #ffffff; /* Optional: add background to the text */
+  padding: 0.5rem; /* Padding around the text */
+  border-radius: 4px; /* Match the thumbnail border-radius */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for the whole container */
+  transition: box-shadow 0.3s ease-in-out; /* Transition for hover effect */
 }
 
+/* Video message styles */
 .message.video .video img {
-  width: 120px;
-  height: 67.5px; /* Maintain 16:9 aspect ratio */
+  width: 160px; /* Increased size for better visibility */
+  height: 90px; /* Maintain 16:9 aspect ratio */
   margin-right: 0.5rem;
+  margin-bottom: 1rem; /* Add bottom margin for spacing */
   border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.message.video .video img:hover {
+  transform: scale(1.05); /* Slight scale up on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
 }
 
 .message.video .video div {
@@ -247,23 +261,54 @@ nav a:hover {
 
 /* Link message styles */
 .message.link {
-  padding: 0;
-  border: none;
-  background: none;
-  box-shadow: none;
+  padding: 1rem; /* Add padding around the whole link container */
+  margin-bottom: 1rem; /* Space between link entries */
+  border: 1px solid #eaeaea; /* Add a border for each link entry */
+  border-radius: 8px; /* Round the corners */
+  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.message.link:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
 }
 
 .message.link .article {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem; /* Space between articles */
+  border-bottom: 1px solid #f0f0f0; /* Divider between links */
+  padding-bottom: 0.5rem; /* Padding below each link */
+}
+
+.message.link .article:last-child {
+  border-bottom: none; /* Remove border from the last article */
 }
 
 .message.link .article a {
-  text-decoration: none;
-  font-size: 0.9rem;
-  color: #1a73e8;
-  transition: color 0.3s;
+  text-decoration: none; /* Remove underline from links */
+  font-size: 1rem; /* Increase font size for readability */
+  color: #1a73e8; /* Adjust to your preferred link color */
+  display: block; /* Make the link take the full width for easier clicking */
+  transition: color 0.2s ease-in-out; /* Transition for color change */
 }
 
 .message.link .article a:hover {
-  color: #0f5bb5;
+  color: #0f5bb5; /* Darker color on hover */
+}
+
+/* Optional: Add an icon before each link */
+.message.link .article a::before {
+  content: '🔗'; /* Use a link icon or similar symbol */
+  margin-right: 0.5rem; /* Space between the icon and the text */
+  display: inline-block; /* Keep the icon inline with text */
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  /* Adjust styles for mobile responsiveness */
+  .message.link {
+    padding: 0.5rem;
+  }
+
+  .message.link .article a {
+    font-size: 0.9rem; /* Smaller font size on smaller screens */
+  }
 }

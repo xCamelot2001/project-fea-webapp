@@ -1,9 +1,15 @@
+// Import React and useState
 import React, { useState } from "react";
+
+// Import necessary components
 import EmotionDetector from "./components/EmotionDetector";
 import CategorySelector from "./components/CategorySelector";
 import ContentTypeSelector from "./components/ContentTypeSelector";
 import Message from "./components/Message";
 import InputArea from "./components/InputArea";
+import { useContentLog } from './components/ContentLogContext'; // import the context hook
+
+// Import the API service functions
 import {
   fetchYouTubeLinks,
   fetchSearchResults,
@@ -11,11 +17,14 @@ import {
 } from "../../services/apiService";
 
 const IntegratedComponent = () => {
+  // Existing states
   const [userInput, setUserInput] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [contentOptions, setContentOptions] = useState({});
   const [conversation, setConversation] = useState([]);
   const [emotion, setEmotion] = useState("neutral");
+  const [isLoading, setIsLoading] = useState(false);
+  const { updateContentLog, isContentUnique } = useContentLog();
 
   const contentTypes = {
     fun: {
@@ -75,11 +84,23 @@ const IntegratedComponent = () => {
     if (prompt.trim() === "") return;
 
     setConversation((prev) => [...prev, { type: "text", content: prompt }]);
+    setIsLoading(true);
 
     try {
       const youtubeResponse = await fetchYouTubeLinks(prompt, emotion);
       const searchResponse = await fetchSearchResults(prompt, emotion);
       const contentResponse = await fetchGeneratedContent(prompt, emotion);
+
+      // Before adding to the conversation, check if content is unique
+      const uniqueVideos = youtubeResponse.data.links.filter(video =>
+        isContentUnique('video', video.url)
+      );
+      const uniqueLinks = searchResponse.data.links.filter(article =>
+        isContentUnique('link', article.url)
+      );
+      const uniqueGeneratedContent = isContentUnique('generated', contentResponse.data.generatedContent)
+        ? contentResponse.data.generatedContent
+        : "I've told you all I know about this!";
 
       setConversation((prev) => [
         ...prev,
@@ -87,8 +108,17 @@ const IntegratedComponent = () => {
         { type: "link", content: searchResponse.data.links },
         { type: "generated", content: contentResponse.data.generatedContent },
       ]);
+
+      // Update the log
+      uniqueVideos.forEach(video => updateContentLog('video', video.url));
+      uniqueLinks.forEach(link => updateContentLog('link', link.url));
+      updateContentLog('generated', uniqueGeneratedContent);
+
+      setIsLoading(false);
+
     } catch (error) {
       console.error("Error fetching content:", error);
+      setIsLoading(false);
       setConversation((prev) => [
         ...prev,
         { type: "error", content: "An error occurred while fetching content." },
@@ -109,6 +139,7 @@ const IntegratedComponent = () => {
           contentOptions={contentOptions}
         />
       )}
+      {isLoading && <div>Loading...</div>}
       <div className="chatbox-container">
         <div className="messages">
           {conversation.map((m, index) => (
