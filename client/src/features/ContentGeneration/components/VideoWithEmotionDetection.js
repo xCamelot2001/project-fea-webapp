@@ -1,10 +1,19 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as faceapi from "face-api.js";
 
 const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
   const videoRef = useRef();
   const canvasRef = useRef();
   const intervalRef = useRef();
+  const [emotionAverages, setEmotionAverages] = useState({
+    happy: 0,
+    sad: 0,
+    surprised: 0,
+    neutral: 0,
+    disgusted: 0,
+    angry: 0,
+    fearful: 0,
+  });
 
   useEffect(() => {
     const loadModels = async () => {
@@ -31,7 +40,6 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
 
     return () => {
       if (videoRef.current?.srcObject) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
       clearInterval(intervalRef.current);
@@ -45,26 +53,44 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
     const onPlay = () => {
       const displaySize = { width: video.width, height: video.height };
       faceapi.matchDimensions(canvas, displaySize);
-
       intervalRef.current = setInterval(async () => {
         const detections = await faceapi
           .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
           .withFaceLandmarks()
           .withFaceExpressions();
-        const resizedDetections = faceapi.resizeResults(
-          detections,
-          displaySize
-        );
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         faceapi.draw.drawDetections(canvas, resizedDetections);
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
         const expressions = detections.map((fd) => fd.expressions);
-        const highestEmotion = expressions.map((e) =>
-          Object.keys(e).reduce((a, b) => (e[a] > e[b] ? a : b))
-        )[0];
-        onEmotionDetected(highestEmotion);
+        expressions.forEach((expression) => {
+          const highestEmotion = Object.keys(expression).reduce((a, b) => (expression[a] > expression[b] ? a : b));
+          setEmotionAverages(prevState => ({
+            ...prevState,
+            [highestEmotion]: prevState[highestEmotion] + 1
+          }));
+        });
       }, 1000);
+
+      const emotionEvaluationInterval = 10000; // 10 seconds to evaluate the dominant emotion
+      const emotionEvaluationTimer = setInterval(() => {
+        const dominantEmotion = Object.keys(emotionAverages).reduce((a, b) => emotionAverages[a] > emotionAverages[b] ? a : b);
+        onEmotionDetected(dominantEmotion);
+        setEmotionAverages({
+          happy: 0,
+          sad: 0,
+          surprised: 0,
+          neutral: 0,
+          disgusted: 0,
+          angry: 0,
+          fearful: 0,
+        });
+      }, emotionEvaluationInterval);
+
+      return () => {
+        clearInterval(emotionEvaluationTimer);
+      };
     };
 
     video.addEventListener("play", onPlay);
@@ -73,8 +99,7 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
       clearInterval(intervalRef.current);
       video.removeEventListener("play", onPlay);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [emotionAverages]);
 
   return (
     <div className="video-container">
