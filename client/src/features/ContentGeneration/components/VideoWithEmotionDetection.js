@@ -1,19 +1,9 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import * as faceapi from "face-api.js";
 
 const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
   const videoRef = useRef();
   const canvasRef = useRef();
-  const intervalRef = useRef();
-  const [emotionAverages, setEmotionAverages] = useState({
-    happy: 0,
-    sad: 0,
-    surprised: 0,
-    neutral: 0,
-    disgusted: 0,
-    angry: 0,
-    fearful: 0,
-  });
 
   useEffect(() => {
     const loadModels = async () => {
@@ -33,78 +23,70 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
         .then((stream) => {
           videoRef.current.srcObject = stream;
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error("Error starting video stream:", err));
     };
 
     loadModels();
 
+    // Clean up function to stop video stream on unmount
     return () => {
       if (videoRef.current?.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
       }
-      clearInterval(intervalRef.current);
     };
   }, []);
 
   useEffect(() => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
     const onPlay = () => {
-      const displaySize = { width: video.width, height: video.height };
-      faceapi.matchDimensions(canvas, displaySize);
-      intervalRef.current = setInterval(async () => {
+      const displaySize = { width: videoRef.current.width, height: videoRef.current.height };
+      faceapi.matchDimensions(canvasRef.current, displaySize);
+
+      const detectEmotion = async () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
         const detections = await faceapi
-          .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-          .withFaceLandmarks()
+          .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
           .withFaceExpressions();
+
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the detections to the canvas
         faceapi.draw.drawDetections(canvas, resizedDetections);
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
-        const expressions = detections.map((fd) => fd.expressions);
-        expressions.forEach((expression) => {
-          const highestEmotion = Object.keys(expression).reduce((a, b) => (expression[a] > expression[b] ? a : b));
-          setEmotionAverages(prevState => ({
-            ...prevState,
-            [highestEmotion]: prevState[highestEmotion] + 1
-          }));
-        });
-      }, 1000);
+        if (detections && detections.length > 0) {
+          const expressions = detections[0].expressions;
+          const highestEmotion = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
+          onEmotionDetected(highestEmotion);
+        }
+      };
 
-      const emotionEvaluationInterval = 10000; // 10 seconds to evaluate the dominant emotion
-      const emotionEvaluationTimer = setInterval(() => {
-        const dominantEmotion = Object.keys(emotionAverages).reduce((a, b) => emotionAverages[a] > emotionAverages[b] ? a : b);
-        onEmotionDetected(dominantEmotion);
-        setEmotionAverages({
-          happy: 0,
-          sad: 0,
-          surprised: 0,
-          neutral: 0,
-          disgusted: 0,
-          angry: 0,
-          fearful: 0,
-        });
-      }, emotionEvaluationInterval);
+      // Run the emotion detection once every second
+      const detectionInterval = setInterval(detectEmotion, 500);
+
+      videoRef.current.addEventListener("play", () => {
+        detectEmotion();
+      });
 
       return () => {
-        clearInterval(emotionEvaluationTimer);
+        clearInterval(detectionInterval);
+        videoRef.current.removeEventListener("play", onPlay);
       };
     };
 
-    video.addEventListener("play", onPlay);
+    videoRef.current.addEventListener("play", onPlay);
 
     return () => {
-      clearInterval(intervalRef.current);
-      video.removeEventListener("play", onPlay);
+      videoRef.current.removeEventListener("play", onPlay);
     };
-  }, [emotionAverages]);
+  }, [onEmotionDetected]);
 
   return (
     <div className="video-container">
       <video ref={videoRef} autoPlay muted width="720" height="560" />
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} width="720" height="560" />
     </div>
   );
 };
