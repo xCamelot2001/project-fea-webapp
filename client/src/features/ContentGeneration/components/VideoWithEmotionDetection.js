@@ -36,6 +36,7 @@ const VideoWithEmotionDetection = () => {
     // Clean up function to stop video stream on unmount
     return () => {
       if (videoRef.current?.srcObject) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         videoRef.current.srcObject.getTracks().forEach(track => track.stop());
       }
     };
@@ -70,6 +71,7 @@ const VideoWithEmotionDetection = () => {
     videoRef.current.addEventListener('play', onPlay);
 
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       videoRef.current.removeEventListener('play', onPlay);
     };
   }, [setEmotion]);

@@ -52,6 +52,7 @@ const IntegratedComponent = () => {
     if (emotion) {
       handleContentSuggestion();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emotion]);
 
   return (
