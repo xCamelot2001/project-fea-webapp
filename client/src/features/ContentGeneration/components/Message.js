@@ -6,25 +6,29 @@ const Message = ({ message }) => {
   const renderContent = () => {
     switch (message.type) {
       case "text":
+        // Assuming message.content is a string or renderable entity
         return <p>{message.content}</p>;
       case "video":
-        return message.content.map((video, idx) => (
-          <div key={idx} className="video">
-            <a href={video.url} target="_blank" rel="noopener noreferrer">
-              <img src={video.thumbnail} alt={video.title} />
-              <div>{video.title}</div>
+        // Directly rendering video content assuming it's not an array
+        return (
+          <div className="video">
+            <a href={message.content.url} target="_blank" rel="noopener noreferrer">
+              <img src={message.content.thumbnail} alt={message.content.title} />
+              <div>{message.content.title}</div>
             </a>
           </div>
-        ));
+        );
       case "link":
-        return message.content.map((article, idx) => (
-          <div key={idx} className="article">
-            <a href={article.url} target="_blank" rel="noopener noreferrer">
-              {article.title}
+        // Directly rendering link content assuming it's not an array
+        return (
+          <div className="article">
+            <a href={message.content.url} target="_blank" rel="noopener noreferrer">
+              {message.content.title}
             </a>
           </div>
-        ));
+        );
       case "generated":
+        // Directly rendering generated content assuming it's not an array
         return <ContentDisplay content={message.content} />;
       default:
         return null;
