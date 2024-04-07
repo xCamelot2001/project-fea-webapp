@@ -64,7 +64,7 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
       };
 
       // Run the emotion detection once every second
-      const detectionInterval = setInterval(detectEmotion, 500);
+      const detectionInterval = setInterval(detectEmotion, 1000);
 
       videoRef.current.addEventListener("play", () => {
         detectEmotion();
