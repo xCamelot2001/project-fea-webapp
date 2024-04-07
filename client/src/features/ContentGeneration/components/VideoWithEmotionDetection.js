@@ -1,9 +1,12 @@
-import React, { useRef, useEffect } from "react";
-import * as faceapi from "face-api.js";
+// VideoWithEmotionDetection.js
+import React, { useRef, useEffect } from 'react';
+import * as faceapi from 'face-api.js';
+import { useEmotion } from './EmotionContext'; // Import the useEmotion hook from EmotionContext
 
-const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
+const VideoWithEmotionDetection = () => {
   const videoRef = useRef();
   const canvasRef = useRef();
+  const { setEmotion } = useEmotion(); // Get the setEmotion function from the context
 
   useEffect(() => {
     const loadModels = async () => {
@@ -23,7 +26,9 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
         .then((stream) => {
           videoRef.current.srcObject = stream;
         })
-        .catch((err) => console.error("Error starting video stream:", err));
+        .catch((err) => {
+          console.error("Error starting video stream:", err);
+        });
     };
 
     loadModels();
@@ -37,51 +42,37 @@ const VideoWithEmotionDetection = ({ onEmotionDetected }) => {
   }, []);
 
   useEffect(() => {
-    const onPlay = () => {
+    const onPlay = async () => {
+      if (!videoRef.current) return;
+      
       const displaySize = { width: videoRef.current.width, height: videoRef.current.height };
       faceapi.matchDimensions(canvasRef.current, displaySize);
 
-      const detectEmotion = async () => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
+      setInterval(async () => {
         const detections = await faceapi
           .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
           .withFaceExpressions();
 
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvasRef.current.getContext('2d').clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-        // Draw the detections to the canvas
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+        faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+        faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
 
         if (detections && detections.length > 0) {
           const expressions = detections[0].expressions;
           const highestEmotion = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
-          onEmotionDetected(highestEmotion);
+          setEmotion(highestEmotion); // Set the detected emotion in the context
         }
-      };
-
-      // Run the emotion detection once every second
-      const detectionInterval = setInterval(detectEmotion, 1000);
-
-      videoRef.current.addEventListener("play", () => {
-        detectEmotion();
-      });
-
-      return () => {
-        clearInterval(detectionInterval);
-        videoRef.current.removeEventListener("play", onPlay);
-      };
+      }, 1000);
     };
 
-    videoRef.current.addEventListener("play", onPlay);
+    videoRef.current.addEventListener('play', onPlay);
 
     return () => {
-      videoRef.current.removeEventListener("play", onPlay);
+      videoRef.current.removeEventListener('play', onPlay);
     };
-  }, [onEmotionDetected]);
+  }, [setEmotion]);
 
   return (
     <div className="video-container">

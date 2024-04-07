@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import VideoWithEmotionDetection from './VideoWithEmotionDetection';
+import React, { useEffect, useState } from 'react';
+import { useEmotion } from './EmotionContext';
 
 const emotionGreetings = {
   happy: "It's great to see you happy!",
@@ -11,41 +11,33 @@ const emotionGreetings = {
   fearful: "It's okay to feel scared sometimes."
 };
 
-function Greeting() {
+const Greeting = () => {
   const [greeting, setGreeting] = useState('');
-  const greetedRef = useRef(false);
-
-  const getTimeOfDayGreeting = () => {
-    const hours = new Date().getHours();
-    return hours < 12 ? "Good morning!" : hours < 18 ? "Good afternoon!" : "Good evening!";
-  };
+  const [isEmotionGreeted, setIsEmotionGreeted] = useState(false);
+  const { emotion } = useEmotion();
 
   useEffect(() => {
+    const getTimeOfDayGreeting = () => {
+      const hours = new Date().getHours();
+      return hours < 12 ? "Good morning!" : hours < 18 ? "Good afternoon!" : "Good evening!";
+    };
+
     setGreeting(getTimeOfDayGreeting());
   }, []);
 
-  const handleEmotionDetected = (detectedEmotion) => {
-    if (!greetedRef.current) {
-      const emotionGreeting = emotionGreetings[detectedEmotion] || "How are you today?";
-      setGreeting((prevGreeting) => `${prevGreeting} ${emotionGreeting}`);
-      greetedRef.current = true;
+  useEffect(() => {
+    // Only update the greeting if the emotion changes and the user hasn't been greeted for an emotion yet.
+    if (emotion && !isEmotionGreeted) {
+      setGreeting(prevGreeting => `${prevGreeting} ${emotionGreetings[emotion] || "How are you today?"}`);
+      setIsEmotionGreeted(true); // Set the flag so that the emotion greeting doesn't update again
     }
-  };
+  }, [emotion, isEmotionGreeted]); // Now the effect depends on `emotion` and `isEmotionGreeted`
 
   return (
-    <div>
-      <VideoWithEmotionDetection onEmotionDetected={handleEmotionDetected} />
-      <GreetingDisplay greeting={greeting} />
-    </div>
-  );
-}
-
-function GreetingDisplay({ greeting }) {
-  return (
-    <div className="greeting">
+    <div className="greeting-container">
       <h2>{greeting}</h2>
     </div>
   );
-}
+};
 
 export default Greeting;
