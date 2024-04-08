@@ -22,9 +22,8 @@ app.post("/api/suggest-content", async (req, res) => {
   }
 
   try {
-    // Get a content suggestion prompt from OpenAI based on the user's emotion
     const messages = [
-      { role: "user", content: `Suggest content in google or youtube to entertain someone who is feeling ${emotion}` },
+      { role: "user", content: `I am feeling ${emotion}. What should I watch or read?` },
     ];
     const completion = await openai.chat.completions.create({
       model: "gpt-4-0125-preview",
@@ -32,53 +31,72 @@ app.post("/api/suggest-content", async (req, res) => {
       max_tokens: 500,
     });
 
-    const contentSuggestion = completion.choices[0].message.content;
-    console.log("Content Suggestion:", contentSuggestion);
-    // Use the content suggestion to search for videos
-    const videoResponse = await axios.get(
-      `https://www.googleapis.com/youtube/v3/search`, {
-        params: {
-          part: "snippet",
-          q: contentSuggestion,
-          type: "video",
-          key: process.env.YOUTUBE_API_KEY,
-        },
-      }
-    );
+    const output = completion.choices[0].message.content;
 
-    const videos = videoResponse.data.items.map(item => ({
-      url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-      title: item.snippet.title,
-      thumbnail: item.snippet.thumbnails.medium.url,
-    }));
-
-    // Use the content suggestion to search for articles
-    const articleResponse = await axios.get(
-      `https://www.googleapis.com/customsearch/v1`, {
-        params: {
-          q: contentSuggestion,
-          cx: process.env.GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
-          key: process.env.GOOGLE_SEARCH_API_KEY,
-        },
-      }
-    );
-
-    const articles = articleResponse.data.items.map(item => ({
-      url: item.link,
-      title: item.title
-    }));
-
-    // Return the content suggestion and the results from the YouTube and Google Search APIs
-    res.json({
-      contentSuggestion: contentSuggestion,
-      videos: videos,
-      articles: articles,
-    });
+    // Assuming GPT-3 returns content categories in a list format
+    const categories = output.match(/\*\*(.*?)\*\*/g).map(match => match.replace(/\*\*/g, '').trim());
+    res.json({ categories: categories });
   } catch (error) {
-    console.error("Error fetching content suggestions:", error);
-    res.status(500).json({ message: "Error fetching content suggestions", error: error.message });
+    console.error("Error fetching content categories:", error);
+    res.status(500).json({ message: "Error fetching content categories", error: error.message });
   }
 });
+
+app.post("/api/fetch-category-content", async (req, res) => {
+  const { emotion, category } = req.body;
+
+  if (!emotion || !category) {
+    return res.status(400).json({ message: "Both emotion and category are required." });
+  }
+
+  try {
+    const youtubeContent = await fetchYouTubeContent(category);
+    const googleContent = await fetchGoogleContent(category);
+
+    res.json({
+      youtube: youtubeContent,
+      google: googleContent,
+    });
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    res.status(500).json({ message: "Error fetching content", error: error.message });
+  }
+});
+
+const fetchYouTubeContent = async (query) => {
+  const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+    params: {
+      part: 'snippet',
+      q: query,
+      type: 'video',
+      maxResults: 5,
+      key: process.env.YOUTUBE_API_KEY,
+    },
+  });
+  
+  return response.data.items.map(item => ({
+    id: item.id.videoId,
+    title: item.snippet.title,
+    description: item.snippet.description,
+    thumbnail: item.snippet.thumbnails.high.url,
+  }));
+};
+
+const fetchGoogleContent = async (query) => {
+  const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
+    params: {
+      q: query,
+      cx: process.env.GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      key: process.env.GOOGLE_SEARCH_API_KEY,
+    },
+  });
+
+  return response.data.items.map(item => ({
+    title: item.title,
+    snippet: item.snippet,
+    link: item.link,
+  }));
+};
 
 const port = process.env.PORT || 5001;
 app.listen(port, () => {
