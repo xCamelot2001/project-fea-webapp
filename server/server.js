@@ -24,7 +24,7 @@ app.post("/api/suggest-content", async (req, res) => {
   try {
     // Get a content suggestion prompt from OpenAI based on the user's emotion
     const messages = [
-      { role: "user", content: `Create a content suggestion to entertain someone who is feeling ${emotion}` },
+      { role: "user", content: `Suggest content in google or youtube to entertain someone who is feeling ${emotion}` },
     ];
     const completion = await openai.chat.completions.create({
       model: "gpt-4-0125-preview",
