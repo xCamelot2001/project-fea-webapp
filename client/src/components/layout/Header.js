@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '/Users/camelot/project-fea-3/client/src/assests/styles/App.css';
+import '../../assests/styles/App.css';
 
 const Header = () => {
   return (
