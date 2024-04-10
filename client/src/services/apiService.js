@@ -8,8 +8,8 @@ export const fetchGeneratedContent = async (prompt, emotion) => {
 };
 
 // Define a function to fetch YouTube links from the server
-export const fetchYouTubeLinks = async (prompt, emotion) => {
-  return axios.post(`${API_BASE_URL}/api/youtube`, { prompt, emotion });
+export const fetchYouTubeLinks = async (searchParams) => {
+  return axios.post(`${API_BASE_URL}/api/youtube`, { searchParams });
 };
 
 // Define a function to fetch search results from the server
