@@ -28,14 +28,25 @@ app.post("/api/chat", async (req, res) => {
 
   try {
     const messages = [
-      { role: "user", content: `I feel ${emotion}. ${prompt}` },
+      { role: "user", content: `I feel ${emotion} . give me some youtube video title searches that will ${prompt} based on my emotion in an json array format with no extra explanation just youtube video searches` },
     ];
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4-0125-preview",
       messages: messages,
       max_tokens: 1500,
     });
-    res.json({ generatedContent: completion.choices[0].message.content });
+
+    const gptRes = completion.choices[0].message.content;
+
+    console.log("GPT Response:", gptRes);
+
+    const cleanedResponse = gptRes.replace(/```json\n|```/g, '').trim();
+
+    const titlesArray = JSON.parse(cleanedResponse);
+
+
+    res.json({ generatedContent: titlesArray });
   } catch (error) {
     console.error("OpenAI Error:", error);
     res
@@ -46,17 +57,16 @@ app.post("/api/chat", async (req, res) => {
 
 // Define route handlers for YouTube
 app.post("/api/youtube", async (req, res) => {
-  const { prompt, emotion } = req.body;
+  const { searchParams } = req.body;
 
   try {
     // Use both prompt and emotion for the search query
-    const searchQuery = `${prompt} videos about ${emotion}`;
     const response = await axios.get(
       `https://www.googleapis.com/youtube/v3/search`,
       {
         params: {
           part: "snippet",
-          q: searchQuery,
+          q: searchParams,
           type: "video",
           key: process.env.YOUTUBE_API_KEY,
         },

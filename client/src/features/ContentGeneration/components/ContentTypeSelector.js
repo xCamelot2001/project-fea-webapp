@@ -1,6 +1,7 @@
 import React from 'react';
 
 const ContentTypeSelector = ({ onSelectContentType, contentOptions }) => {
+
   return (
     <div className="content-type-selection">
       {Object.entries(contentOptions).map(([type, prompt]) => (

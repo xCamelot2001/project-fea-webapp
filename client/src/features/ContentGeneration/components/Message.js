@@ -7,15 +7,6 @@ const Message = ({ message }) => {
     switch (message.type) {
       case "text":
         return <p>{message.content}</p>;
-      case "video":
-        return message.content.map((video, idx) => (
-          <div key={idx} className="video">
-            <a href={video.url} target="_blank" rel="noopener noreferrer">
-              <img src={video.thumbnail} alt={video.title} />
-              <div>{video.title}</div>
-            </a>
-          </div>
-        ));
       case "link":
         return message.content.map((article, idx) => (
           <div key={idx} className="article">
@@ -24,6 +15,15 @@ const Message = ({ message }) => {
             </a>
           </div>
         ));
+      case "video":
+          return message.content.map((video, idx) => (
+            <div key={idx} className="video">
+              <a href={video.url} target="_blank" rel="noopener noreferrer">
+                <img src={video.thumbnail} alt={video.title} />
+                <div>{video.title}</div>
+              </a>
+            </div>
+          ));
       case "generated":
         return <ContentDisplay content={message.content} />;
       default:
