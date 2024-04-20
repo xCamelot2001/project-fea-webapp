@@ -7,18 +7,15 @@ import mongoose from "mongoose";
 
 dotenv.config();
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connected...'))
-.catch(err => console.error('MongoDB connection error:', err));
-
 // Create an Express app
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Initialize OpenAI with the API key from the environment variables
 const openai = new OpenAI({
@@ -132,12 +129,12 @@ app.post("/api/search", async (req, res) => {
 
 // Define a schema for the survey
 app.post('/api/survey', async (req, res) => {
-  const { question1, question2, feedback } = req.body;
+  const { answers } = req.body;
   // Create a new survey response using your Mongoose model
   const newSurveyResponse = new SurveyResponse({
-    question1,
-    question2,
-    feedback
+    question1: answers.question1,
+    question2: answers.question2,
+    feedback: answers.feedback
   });
   try {
     await newSurveyResponse.save();

@@ -40,9 +40,9 @@ function Survey() {
               <input
                 type="radio"
                 name="question1"
-                value="option1"
-                checked={answers["question1"] === "option1"}
-                onChange={() => handleOptionChange("question1", "option1")}
+                value="Satisfied"
+                checked={answers["question1"] === "Satisfied"}
+                onChange={() => handleOptionChange("question1", "Satisfied")}
               />
                 Satisfied
             </label>
@@ -52,9 +52,9 @@ function Survey() {
               <input
                 type="radio"
                 name="question1"
-                value="option2"
-                checked={answers["question1"] === "option2"}
-                onChange={() => handleOptionChange("question1", "option2")}
+                value="Not satisfied"
+                checked={answers["question1"] === "Not satisfied"}
+                onChange={() => handleOptionChange("question1", "Not satisfied")}
               />
                 Not satisfied
             </label>
@@ -68,9 +68,9 @@ function Survey() {
               <input
                 type="radio"
                 name="question2"
-                value="option1"
-                checked={answers["question2"] === "option1"}
-                onChange={() => handleOptionChange("question2", "option1")}
+                value="Yes"
+                checked={answers["question2"] === "Yes"}
+                onChange={() => handleOptionChange("question2", "Yes")}
               />
                 Yes
             </label>
@@ -80,9 +80,9 @@ function Survey() {
               <input
                 type="radio"
                 name="question2"
-                value="option2"
-                checked={answers["question2"] === "option2"}
-                onChange={() => handleOptionChange("question2", "option2")}
+                value="No"
+                checked={answers["question2"] === "No"}
+                onChange={() => handleOptionChange("question2", "No")}
               />
                 No
             </label>
