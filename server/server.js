@@ -46,8 +46,6 @@ app.post("/api/chat", async (req, res) => {
 
     const gptRes = completion.choices[0].message.content;
 
-    console.log("GPT Response:", gptRes);
-
     const cleanedResponse = gptRes.replace(/```json\n|```/g, '').trim();
 
     const titlesArray = JSON.parse(cleanedResponse);
