@@ -5,6 +5,7 @@ import ContentLogProvider from "./features/ContentGeneration/components/ContentL
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Survey from "./pages/Survey";
 import "./assests/styles/App.css";
 
 // App component
@@ -25,6 +26,7 @@ const App = () => {
             />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/survey" element={<Survey />} />
           </Routes>
         </div>
       </Router>

@@ -16,3 +16,8 @@ export const fetchYouTubeLinks = async (searchParams) => {
 export const fetchSearchResults = async (prompt, emotion) => {
   return axios.post(`${API_BASE_URL}/api/search`, { prompt, emotion });
 };
+
+// Define a function to submit survey responses to the server
+export const submitSurvey = async (answers, feedback) => {
+  return axios.post(`${API_BASE_URL}/api/survey`, { answers, feedback });
+};

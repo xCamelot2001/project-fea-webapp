@@ -3,9 +3,19 @@ import OpenAI from "openai";
 import cors from "cors";
 import dotenv from "dotenv";
 import axios from "axios";
+import mongoose from "mongoose";
 
 dotenv.config();
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.error('MongoDB connection error:', err));
+
+// Create an Express app
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -118,6 +128,30 @@ app.post("/api/search", async (req, res) => {
       .status(500)
       .json({ message: "Error fetching search results", error: error.message });
   }
+});
+
+// Define a schema for the survey
+app.post('/api/survey', async (req, res) => {
+  const { question1, question2, feedback } = req.body;
+  // Create a new survey response using your Mongoose model
+  const newSurveyResponse = new SurveyResponse({
+    question1,
+    question2,
+    feedback
+  });
+  try {
+    await newSurveyResponse.save();
+    res.status(201).send('Survey response saved successfully');
+  } catch (error) {
+    res.status(500).send('Error saving survey response');
+  }
+});
+
+// Define SurveyResponse model
+const SurveyResponse = mongoose.model('SurveyResponse', {
+  question1: String,
+  question2: String,
+  feedback: String
 });
 
 // Define a route handler for the root path
