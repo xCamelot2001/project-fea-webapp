@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import axios from "axios";
 import mongoose from "mongoose";
+import path from 'path';
 
 dotenv.config();
 
