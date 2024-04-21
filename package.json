@@ -5,8 +5,8 @@
     "scripts": {
       "start": "node server/server.js",
       "dev": "nodemon server/server.js",
-      "build-client": "react-scripts build",
-      "heroku-postbuild": "cd client && npm install && npm run build",
+      "build-client": "cd client && react-scripts build",
+      "heroku-postbuild": "npm run build-client",
       "test": "echo \"Error: no test specified\" && exit 1"
     },
     "engines": {
