@@ -33,18 +33,19 @@ function Survey() {
     <div>
       <h1>Survey Form</h1>
       <form onSubmit={handleSubmit}>
+
         <div>
-          <label>How satisfied Are you with the responses?</label>
+          <label>How would you rate the accuracy of face expression detection?</label>
           <div>
             <label>
               <input
                 type="radio"
                 name="question1"
-                value="Satisfied"
-                checked={answers["question1"] === "Satisfied"}
-                onChange={() => handleOptionChange("question1", "Satisfied")}
+                value="Very Good"
+                checked={answers["question1"] === "Very Good"}
+                onChange={() => handleOptionChange("question1", "Very Good")}
               />
-                Satisfied
+                Very Good
             </label>
           </div>
           <div>
@@ -52,27 +53,63 @@ function Survey() {
               <input
                 type="radio"
                 name="question1"
-                value="Not satisfied"
-                checked={answers["question1"] === "Not satisfied"}
-                onChange={() => handleOptionChange("question1", "Not satisfied")}
+                value="Good"
+                checked={answers["question1"] === "Good"}
+                onChange={() => handleOptionChange("question1", "Good")}
               />
-                Not satisfied
+                Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question1"
+                value="Neutral"
+                checked={answers["question1"] === "Neutral"}
+                onChange={() => handleOptionChange("question1", "Neutral")}
+              />
+                Neutral
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question1"
+                value="Bad"
+                checked={answers["question1"] === "Bad"}
+                onChange={() => handleOptionChange("question1", "Bad")}
+              />
+                Bad
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question1"
+                value="Very Bad"
+                checked={answers["question1"] === "Very Bad"}
+                onChange={() => handleOptionChange("question1", "Very Bad")}
+              />
+                Very Bad
             </label>
           </div>
         </div>
 
         <div>
-          <label>Would you recommend the website to your friends and family?</label>
+          <label>How would you rate the relevancy of the content generation?</label>
           <div>
             <label>
               <input
                 type="radio"
                 name="question2"
-                value="Yes"
-                checked={answers["question2"] === "Yes"}
-                onChange={() => handleOptionChange("question2", "Yes")}
+                value="Very Good"
+                checked={answers["question1"] === "Very Good"}
+                onChange={() => handleOptionChange("question1", "Very Good")}
               />
-                Yes
+                Very Good
             </label>
           </div>
           <div>
@@ -80,11 +117,239 @@ function Survey() {
               <input
                 type="radio"
                 name="question2"
-                value="No"
-                checked={answers["question2"] === "No"}
-                onChange={() => handleOptionChange("question2", "No")}
+                value="Good"
+                checked={answers["question1"] === "Good"}
+                onChange={() => handleOptionChange("question1", "Good")}
               />
-                No
+                Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question2"
+                value="Neutral"
+                checked={answers["question1"] === "Neutral"}
+                onChange={() => handleOptionChange("question1", "Neutral")}
+              />
+                Neutral
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question2"
+                value="Bad"
+                checked={answers["question1"] === "Bad"}
+                onChange={() => handleOptionChange("question1", "Bad")}
+              />
+                Bad
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question2"
+                value="Very Bad"
+                checked={answers["question1"] === "Very Bad"}
+                onChange={() => handleOptionChange("question1", "Very Bad")}
+              />
+                Very Bad
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label>How would you rate the level of entertainment/engagement that you experienced?</label>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question3"
+                value="Very Good"
+                checked={answers["question1"] === "Very Good"}
+                onChange={() => handleOptionChange("question1", "Very Good")}
+              />
+                Very Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question3"
+                value="Good"
+                checked={answers["question1"] === "Good"}
+                onChange={() => handleOptionChange("question1", "Good")}
+              />
+                Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question3"
+                value="Neutral"
+                checked={answers["question1"] === "Neutral"}
+                onChange={() => handleOptionChange("question1", "Neutral")}
+              />
+                Neutral
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question3"
+                value="Bad"
+                checked={answers["question1"] === "Bad"}
+                onChange={() => handleOptionChange("question1", "Bad")}
+              />
+                Bad
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question3"
+                value="Very Bad"
+                checked={answers["question1"] === "Very Bad"}
+                onChange={() => handleOptionChange("question1", "Very Bad")}
+              />
+                Very Bad
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label>How was your overall satisfaction from using the app?</label>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question4"
+                value="Very Good"
+                checked={answers["question1"] === "Very Good"}
+                onChange={() => handleOptionChange("question1", "Very Good")}
+              />
+                Very Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question4"
+                value="Good"
+                checked={answers["question1"] === "Good"}
+                onChange={() => handleOptionChange("question1", "Good")}
+              />
+                Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question4"
+                value="Neutral"
+                checked={answers["question1"] === "Neutral"}
+                onChange={() => handleOptionChange("question1", "Neutral")}
+              />
+                Neutral
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question4"
+                value="Bad"
+                checked={answers["question1"] === "Bad"}
+                onChange={() => handleOptionChange("question1", "Bad")}
+              />
+                Bad
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question4"
+                value="Very Bad"
+                checked={answers["question1"] === "Very Bad"}
+                onChange={() => handleOptionChange("question1", "Very Bad")}
+              />
+                Very Bad
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label>How likely is it that you share this app with others?</label>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question5"
+                value="Very Good"
+                checked={answers["question1"] === "Very Good"}
+                onChange={() => handleOptionChange("question1", "Very Good")}
+              />
+                Very Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question5"
+                value="Good"
+                checked={answers["question1"] === "Good"}
+                onChange={() => handleOptionChange("question1", "Good")}
+              />
+                Good
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question5"
+                value="Neutral"
+                checked={answers["question1"] === "Neutral"}
+                onChange={() => handleOptionChange("question1", "Neutral")}
+              />
+                Neutral
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question5"
+                value="Bad"
+                checked={answers["question1"] === "Bad"}
+                onChange={() => handleOptionChange("question1", "Bad")}
+              />
+                Bad
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="question5"
+                value="Very Bad"
+                checked={answers["question1"] === "Very Bad"}
+                onChange={() => handleOptionChange("question1", "Very Bad")}
+              />
+                Very Bad
             </label>
           </div>
         </div>
