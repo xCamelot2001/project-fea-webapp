@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import axios from "axios";
 import mongoose from "mongoose";
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -152,6 +153,9 @@ const SurveyResponse = mongoose.model('SurveyResponse', {
   question2: String,
   feedback: String
 });
+
+// ES Modules way of getting __dirname
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
 app.get('*', (req, res) => {
