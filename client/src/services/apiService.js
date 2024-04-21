@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5001";
+const API_BASE_URL = "https://expressence.studio";
 
 // Define a function to fetch generated content from the server
 export const fetchGeneratedContent = async (prompt, emotion) => {
