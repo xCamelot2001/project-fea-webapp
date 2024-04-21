@@ -6,9 +6,9 @@ function Contact() {
       <h1>Contact Us</h1>
       <p>If you have any questions, please don't hesitate to reach out to us:</p>
       <ul>
-          <li>Phone: (123) 456-7890</li>
-          <li>Email: info@example.com</li>
-          <li>Address: 123 E</li>
+          <li></li>
+          <li>Email: shk_css@yahoo.com</li>
+          <li>Linkedin: hosseinkhanehmasjedi</li>
       </ul>
       <form action="#" method="post">
           <label htmlFor="name">Your Name:</label>
