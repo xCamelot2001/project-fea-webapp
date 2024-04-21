@@ -138,6 +138,9 @@ app.post("/api/search", async (req, res) => {
 const SurveyResponse = mongoose.model('SurveyResponse', {
   question1: String,
   question2: String,
+  question3: String,
+  question4: String,
+  question5: String,
   feedback: String
 });
 
@@ -148,6 +151,9 @@ app.post('/api/survey', async (req, res) => {
   const newSurveyResponse = new SurveyResponse({
     question1: answers.question1,
     question2: answers.question2,
+    question3: answers.question3,
+    question4: answers.question4,
+    question5: answers.question5,
     feedback: answers.feedback
   });
   try {
