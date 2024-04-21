@@ -9,6 +9,9 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
+// ES Modules way of getting __dirname
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 // Create an Express app
 const app = express();
 app.use(cors());
@@ -153,9 +156,6 @@ const SurveyResponse = mongoose.model('SurveyResponse', {
   question2: String,
   feedback: String
 });
-
-// ES Modules way of getting __dirname
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
 app.get('*', (req, res) => {
