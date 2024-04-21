@@ -8,9 +8,14 @@ import mongoose from "mongoose";
 dotenv.config();
 
 // Create an Express app
+const express = require('express');
+const path = require('path');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
@@ -147,6 +152,11 @@ const SurveyResponse = mongoose.model('SurveyResponse', {
   question1: String,
   question2: String,
   feedback: String
+});
+
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 // Define a route handler for the root path
