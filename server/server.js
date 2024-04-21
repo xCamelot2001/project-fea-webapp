@@ -21,7 +21,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+const uri = process.env.MONGODB_URI;
+mongoose.connect(uri)
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.error('MongoDB connection error:', err));
 
@@ -133,6 +134,13 @@ app.post("/api/search", async (req, res) => {
   }
 });
 
+// Define SurveyResponse model
+const SurveyResponse = mongoose.model('SurveyResponse', {
+  question1: String,
+  question2: String,
+  feedback: String
+});
+
 // Define a schema for the survey
 app.post('/api/survey', async (req, res) => {
   const { answers } = req.body;
@@ -148,13 +156,6 @@ app.post('/api/survey', async (req, res) => {
   } catch (error) {
     res.status(500).send('Error saving survey response');
   }
-});
-
-// Define SurveyResponse model
-const SurveyResponse = mongoose.model('SurveyResponse', {
-  question1: String,
-  question2: String,
-  feedback: String
 });
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
