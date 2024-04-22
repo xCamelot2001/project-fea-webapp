@@ -8,9 +8,7 @@ const InputArea = ({ userInput, setUserInput, sendMessage }) => {
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        placeholder="Type your message..."
       />
-      <button onClick={sendMessage}>Send</button>
     </div>
   );
 };
