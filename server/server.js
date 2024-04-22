@@ -44,7 +44,7 @@ app.post("/api/chat", async (req, res) => {
 
   try {
     const messages = [
-      { role: "user", content: `I feel ${emotion} . give me some youtube video title searches that will ${prompt} based on my emotion in an json array format with no extra explanation just youtube video searches` },
+      { role: "user", content: `I feel ${emotion} . give me some youtube video title searches that will ${prompt} based on my emotion in a json array format with no extra explanation just youtube video searches` },
     ];
 
     const completion = await openai.chat.completions.create({

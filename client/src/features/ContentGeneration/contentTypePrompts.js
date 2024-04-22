@@ -1,46 +1,46 @@
 const ContentTypes = {
-    fun: {
-      joke: "Tell me a hilarious joke",
-      story: "Share a funny anecdote or story",
-      fact: "Provide an amusing fun fact",
-      game: "Suggest an entertaining quick game",
-      trivia: "Give me a fun trivia question",
-    },
-    motivation: {
-      poem: "Share an inspiring poem",
-      quote: "Provide a powerful motivational quote",
-      biography: "Tell me about a remarkable person's life story",
-      advice: "Give me some life-changing advice",
-      challenge: "Propose a small motivational challenge",
-    },
-    comfort: {
-      supportiveMessage: "I need uplifting words of comfort",
-      meditation: "Guide me through a relaxing meditation session",
-      music: "Recommend soothing music for relaxation",
-      story: "Tell me a comforting story",
-      advice: "Provide some calming advice",
-    },
-    education: {
-      tutorial: "Show me a tutorial on a fascinating topic",
-      fact: "Tell me an intriguing educational fact",
-      history: "Share an interesting historical event",
-      science: "Explain a fascinating science concept",
-      technology: "Describe a recent breakthrough in technology",
-    },
-    lifestyle: {
-      fitness: "Suggest a quick fitness routine",
-      nutrition: "Give me a healthy nutrition tip",
-      wellness: "Share a wellness activity or idea",
-      fashion: "Provide a current fashion trend",
-      travel: "Recommend a must-visit travel destination",
-    },
-    entertainment: {
-      movie: "Suggest a must-watch movie",
-      book: "Recommend a compelling book to read",
-      show: "Propose an engaging TV show or series",
-      event: "Inform me about an upcoming entertainment event",
-      celebrity: "Tell me an interesting fact about a celebrity",
-    },
-  };
+  fun: {
+    joke: "make me laugh with funny jokes",
+    story: "entertain me with humorous stories",
+    fact: "amuse me with fun facts",
+    game: "engage me with quick, fun games",
+    trivia: "challenge me with trivia questions",
+  },
+  motivation: {
+    poem: "inspire me with motivational poems",
+    quote: "empower me with motivational quotes",
+    biography: "motivate me with stories of remarkable people",
+    advice: "offer life-changing advice",
+    challenge: "encourage me with a motivational challenge",
+  },
+  comfort: {
+    supportiveMessage: "comfort me with uplifting messages",
+    meditation: "relax me with guided meditation sessions",
+    music: "soothe me with relaxing music recommendations",
+    story: "calm me with comforting stories",
+    advice: "ease my mind with calming advice",
+  },
+  education: {
+    tutorial: "educate me with interesting tutorials",
+    fact: "enlighten me with educational facts",
+    history: "intrigue me with historical events",
+    science: "captivate me with explanations of fascinating science concepts",
+    technology: "inform me about recent technology breakthroughs",
+  },
+  lifestyle: {
+    fitness: "energize me with quick fitness routines",
+    nutrition: "guide me with healthy nutrition tips",
+    wellness: "inspire me with wellness activities",
+    fashion: "update me on current fashion trends",
+    travel: "excite me with must-visit travel destinations",
+  },
+  entertainment: {
+    movie: "entertain me with must-watch movie suggestions",
+    book: "engage me with compelling book recommendations",
+    show: "captivate me with engaging TV shows or series",
+    event: "inform me about upcoming entertainment events",
+    celebrity: "interest me with celebrity facts",
+  },
+};
 
-  export default ContentTypes;
+export default ContentTypes;
