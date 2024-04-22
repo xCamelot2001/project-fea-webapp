@@ -4,7 +4,7 @@ import SurveyFormat from '../features/Survey/SurveyFormat';
 function Survey() {
   return (
     <div>
-      <h1>Welcome to the Survey Page</h1>
+      <h1>Survey Form</h1>
       <SurveyFormat />
     </div>
   );
