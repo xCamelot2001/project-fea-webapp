@@ -1,65 +1,88 @@
 .survey-container {
-    max-width: 600px;
-    margin: 2em auto;
-    padding: 1em;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .survey-header {
-    text-align: center;
-    color: #333;
-  }
-  
-  .survey-intro {
-    font-size: 1em;
-    margin-bottom: 2em;
-    text-align: center;
-  }
-  
-  .survey-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .survey-feedback {
-    margin-top: 2em;
-  }
-  
-  .feedback-label {
-    display: block;
-    margin-bottom: 0.5em;
-  }
-  
-  .feedback-textarea {
-    width: 100%;
-    height: 120px;
-    padding: 0.5em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .submit-button {
-    margin-top: 2em;
-    padding: 0.5em 1em;
-    font-size: 1.2em;
-    color: white;
-    background-color: #5cb85c;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .submit-button:hover {
-    background-color: #4cae4c;
-  }
-  
-  .submit-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  .survey-question-text {
-    margin-top: 1em;
-  }
+  max-width: 600px;
+  margin: 2em auto;
+  padding: 1em;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.survey-header {
+  text-align: center;
+  color: #333;
+}
+
+.survey-intro {
+  font-size: 1em;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.survey-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align form items (children) to the center */
+}
+
+.survey-feedback {
+  margin-top: 2em;
+  width: 100%; /* Set the width of feedback section to be full width of the form */
+}
+
+.feedback-label {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.feedback-textarea {
+  width: calc(100% - 1em); /* Subtract padding from the total width */
+  height: 120px;
+  padding: 0.5em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none; /* Prevent the textarea from being resizable */
+}
+
+.submit-button {
+  margin-top: 2em;
+  padding: 0.5em 1em;
+  font-size: 1.2em;
+  color: white;
+  background-color: #5cb85c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; /* Optional: if you want the button to be full width */
+}
+
+.submit-button:hover {
+  background-color: #4cae4c;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.survey-question-text {
+  width: 100%; /* Set the width of question text to be full width of the form */
+  margin-top: 1em;
+}
+
+.survey-question {
+  margin-bottom: 1.5em; /* Adjust this value to increase/decrease space between questions */
+}
+
+.radio-group {
+  margin-bottom: 0.5em; /* Adjust this value to increase/decrease space between question and options */
+}
+
+.radio-option {
+  margin-bottom: 0.25em; /* Adjust this value to increase/decrease space between each option */
+}
+
+/* Add or adjust this style in your RadioGroup component */
+.radio-group label {
+  display: block;
+  margin-top: 0.5em;
+}
