@@ -77,10 +77,6 @@
   margin-bottom: 0.5em; /* Adjust this value to increase/decrease space between question and options */
 }
 
-.radio-option {
-  margin-bottom: 0.25em; /* Adjust this value to increase/decrease space between each option */
-}
-
 /* Add or adjust this style in your RadioGroup component */
 .radio-group label {
   display: block;
