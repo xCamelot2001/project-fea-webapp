@@ -84,8 +84,24 @@ function SurveyFormat() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
+    // Map SUS responses to numerical values
+    const mappedAnswers = Object.keys(answers).reduce((acc, key) => {
+    if (key.includes('sus')) {
+      const valueMap = {
+        'Strongly agree': 5,
+        'Agree': 4,
+        'Neutral': 3,
+        'Disagree': 2,
+        'Strongly disagree': 1
+      };
+      acc[key] = valueMap[answers[key]];
+    } else {
+      acc[key] = answers[key];
+    }
+    return acc;
+  }, {});
     try {
-      await submitSurvey(answers);
+      await submitSurvey(mappedAnswers);
       setAnswers({});
       setSubmitting(false);
       alert('Survey submitted successfully!');

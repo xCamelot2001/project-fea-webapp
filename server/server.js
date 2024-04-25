@@ -135,31 +135,37 @@ app.post("/api/search", async (req, res) => {
 });
 
 // Define SurveyResponse model
-const SurveyResponse = mongoose.model('SurveyResponse', {
-  question1: String,
-  question2: String,
-  question3: String,
-  question4: String,
-  question5: String,
-  feedback: String
+const surveyResponseSchema = new mongoose.Schema({
+  // For SUS questions, store them as numbers
+  sus1: Number,
+  sus2: Number,
+  sus3: Number,
+  sus4: Number,
+  sus5: Number,
+  sus6: Number,
+  sus7: Number,
+  sus8: Number,
+  sus9: Number,
+  sus10: Number,
+  // For qualitative feedback, store as strings
+  qualitative1: String,
+  qualitative2: String,
+},{
+  collection: 'survey-form'
 });
 
-// Define a schema for the survey
+const SurveyResponse = mongoose.model('SurveyResponse', surveyResponseSchema);
+
 app.post('/api/survey', async (req, res) => {
   const { answers } = req.body;
   // Create a new survey response using your Mongoose model
-  const newSurveyResponse = new SurveyResponse({
-    question1: answers.question1,
-    question2: answers.question2,
-    question3: answers.question3,
-    question4: answers.question4,
-    question5: answers.question5,
-    feedback: answers.feedback
-  });
+  const newSurveyResponse = new SurveyResponse(answers); // Directly pass the answers object
+
   try {
     await newSurveyResponse.save();
     res.status(201).send('Survey response saved successfully');
   } catch (error) {
+    console.error('Error saving survey response:', error);
     res.status(500).send('Error saving survey response');
   }
 });
