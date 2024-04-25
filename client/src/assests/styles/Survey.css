@@ -69,14 +69,6 @@
   margin-top: 1em;
 }
 
-.survey-question {
-  margin-bottom: 1.5em; /* Adjust this value to increase/decrease space between questions */
-}
-
-.radio-group {
-  margin-bottom: 0.5em; /* Adjust this value to increase/decrease space between question and options */
-}
-
 /* Add or adjust this style in your RadioGroup component */
 .radio-group label {
   display: block;
