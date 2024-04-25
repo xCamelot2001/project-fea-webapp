@@ -1,11 +1,11 @@
 import React from 'react';
 
 const RadioGroup = ({ questionKey, questionLabel, options, value, onChange }) => (
-  <div>
-    <label>{questionLabel}</label>
-    {options.map(option => (
-      <div key={option}>
-        <label>
+  <div className="survey-question">
+    <p>{questionLabel}</p>
+    <div className="radio-group">
+      {options.map(option => (
+        <label key={option} className="radio-option">
           <input
             type="radio"
             name={questionKey}
@@ -15,8 +15,8 @@ const RadioGroup = ({ questionKey, questionLabel, options, value, onChange }) =>
           />
           {option}
         </label>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 );
 

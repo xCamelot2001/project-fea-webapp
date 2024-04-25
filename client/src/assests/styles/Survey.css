@@ -69,8 +69,17 @@
   margin-top: 1em;
 }
 
-/* Add or adjust this style in your RadioGroup component */
+.survey-question {
+  margin-bottom: 1.5em; /* Space between each question */
+}
+
 .radio-group label {
-  display: block;
-  margin-top: 0.5em;
+  display: block; /* Ensures each option is on a new line */
+  margin-top: 0.5em; /* Space between the question and the first option */
+}
+
+.radio-option {
+  display: inline-block; /* Puts radio options in a line */
+  margin-right: 1em; /* Space between options */
+  margin-top: 0.25em; /* Space between option lines */
 }
