@@ -7,52 +7,52 @@ const susQuestions = [
   {
     key: 'sus1',
     label: 'I think that I would like to use this system frequently.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus2',
     label: 'I found the system unnecessarily complex.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus3',
     label: 'I thought the system was easy to use.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus4',
     label: 'I think that I would need the support of a technical person to be able to use this system.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus5',
     label: 'I found the various functions in this system were well integrated.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus6',
     label: 'I thought there was too much inconsistency in this system.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus7',
     label: 'I would imagine that most people would learn to use this system very quickly.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus8',
     label: 'I found the system very cumbersome to use.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus9',
     label: 'I felt very confident using the system.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
   {
     key: 'sus10',
     label: 'I needed to learn a lot of things before I could get going with this system.',
-    options: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree']
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree']
   },
 ];
 
