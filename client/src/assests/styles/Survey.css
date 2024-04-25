@@ -70,7 +70,7 @@
 }
 
 .survey-question {
-  margin-bottom: 1.5em; /* Space between each question */
+  margin-bottom: 0.75em; /* Space between each question */
 }
 
 .radio-group label {
@@ -80,6 +80,6 @@
 
 .radio-option {
   display: inline-block; /* Puts radio options in a line */
-  margin-right: 1em; /* Space between options */
+  margin-right: 0.25em; /* Space between options */
   margin-top: 0.25em; /* Space between option lines */
 }
