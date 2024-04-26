@@ -67,8 +67,8 @@
 .survey-question-text,
 .survey-question {
   width: 100%; /* Ensure question text and questions are full width */
-  margin-top: 0.5em;
-  margin-bottom: 0.5em; /* Space between each question */
+  margin-top: 0.3em;
+  margin-bottom: 0.3em; /* Space between each question */
 }
 
 .radio-group label {
@@ -77,7 +77,7 @@
 
 .radio-option {
   display: block; /* Ensures options do not line up next to each other */
-  margin-top: 0.25em; /* Space between options */
+  margin-top: 0.2em; /* Space between options */
 }
 
 /* Additional style to align the text properly for all questions */
