@@ -21,12 +21,12 @@
 .survey-form {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Align form items (children) to the center */
+  align-items: flex-start; /* Align items to the left */
 }
 
 .survey-feedback {
   margin-top: 2em;
-  width: 100%; /* Set the width of feedback section to be full width of the form */
+  width: 100%;
 }
 
 .feedback-label {
@@ -35,12 +35,12 @@
 }
 
 .feedback-textarea {
-  width: calc(100% - 1em); /* Subtract padding from the total width */
+  width: 100%; /* Adjusted to be full width without calc */
   height: 120px;
   padding: 0.5em;
   border: 1px solid #ddd;
   border-radius: 4px;
-  resize: none; /* Prevent the textarea from being resizable */
+  resize: none;
 }
 
 .submit-button {
@@ -64,22 +64,25 @@
   cursor: not-allowed;
 }
 
-.survey-question-text {
-  width: 100%; /* Set the width of question text to be full width of the form */
-  margin-top: 1em;
-}
-
+.survey-question-text,
 .survey-question {
+  width: 100%; /* Ensure question text and questions are full width */
+  margin-top: 1em;
   margin-bottom: 0.75em; /* Space between each question */
 }
 
 .radio-group label {
   display: block; /* Ensures each option is on a new line */
-  margin-top: 0.5em; /* Space between the question and the first option */
 }
 
 .radio-option {
-  display: inline-block; /* Puts radio options in a line */
-  margin-right: 0.25em; /* Space between options */
-  margin-top: 0.25em; /* Space between option lines */
+  display: block; /* Ensures options do not line up next to each other */
+  margin-top: 0.25em; /* Space between options */
+}
+
+/* Additional style to align the text properly for all questions */
+label {
+  text-align: left;
+  display: inline-block; /* Align text labels to the left */
+  margin-left: 0;
 }
