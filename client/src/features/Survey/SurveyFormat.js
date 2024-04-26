@@ -127,6 +127,16 @@ const qualitativeQuestions = [
   },
   {
     key: "qualitative2",
+    label: "What did you find frustrating or difficult when using our website?",
+    type: "text",
+  },
+  {
+    key: "qualitative3",
+    label: "How accurate did you find the emotion-based content recommendations?",
+    type: "text",
+  },
+  {
+    key: "qualitative4",
     label: "What improvements would you suggest?",
     type: "text",
   },

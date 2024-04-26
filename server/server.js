@@ -150,6 +150,8 @@ const surveyResponseSchema = new mongoose.Schema({
   // For qualitative feedback, store as strings
   qualitative1: String,
   qualitative2: String,
+  qualitative3: String,
+  qualitative4: String,
 },{
   collection: 'survey-form'
 });
