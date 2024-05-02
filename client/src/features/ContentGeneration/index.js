@@ -7,7 +7,6 @@ import CategorySelector from "./components/CategorySelector";
 import ContentTypeselector from "./components/ContentTypeSelector";
 import ContentTypes from "./contentTypePrompts";
 import Message from "./components/Message";
-import InputArea from "./components/InputArea";
 import { useContentLog } from "./components/ContentLogContext"; // import the context hook
 
 // Import the API service functions
@@ -19,7 +18,6 @@ import {
 
 const IntegratedComponent = () => {
   // Existing states
-  const [userInput, setUserInput] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [contentOptions, setContentOptions] = useState({});
   const [conversation, setConversation] = useState([]);
@@ -33,59 +31,45 @@ const IntegratedComponent = () => {
   };
 
   const handleContentTypeselect = (prompt) => {
+    if (prompt.trim() === "") return; // Ensures no empty prompts are processed
     sendMessage(prompt);
   };
 
   const sendMessage = async (prompt) => {
-    if (prompt.trim() === "") return;
-
-    setConversation((prev) => [{ type: "text", content: prompt }, ...prev, ]);
-    console.log(conversation)
+    setConversation((prev) => [{ type: "text", content: prompt }, ...prev]);
     setIsLoading(true);
-
     try {
       const contentResponse = await fetchGeneratedContent(prompt, emotion);
-      const parsedContentResponse = contentResponse.data;
-
-      // Generate a random index based on the length of the generatedContent array
       const randomIndex = Math.floor(
-        Math.random() * parsedContentResponse.generatedContent.length
+        Math.random() * contentResponse.data.generatedContent.length
       );
-      const randomContent = parsedContentResponse.generatedContent[randomIndex];
+      const randomContent = contentResponse.data.generatedContent[randomIndex];
       const youtubeResponse = await fetchYouTubeLinks(randomContent);
       const searchResponse = await fetchSearchResults(prompt, emotion);
 
-      // Before adding to the conversation, check if content is unique
       const uniqueVideos = youtubeResponse.data.links.filter((video) =>
         isContentUnique("video", video.url)
       );
-      const uniqueLinks = searchResponse.data.links.filter((article) =>
-        isContentUnique("link", article.url)
+      const uniqueLinks = searchResponse.data.links.filter((link) =>
+        isContentUnique("link", link.url)
       );
-      // const uniqueGeneratedContent = isContentUnique('generated', contentResponse.data.generatedContent)
-      //   ? contentResponse.data.generatedContent
-      //   : "I've told you all I know about this!";
 
       setConversation((prev) => [
-        { type: "video", content: youtubeResponse.data.links },
-        { type: "link", content: searchResponse.data.links },
+        { type: "video", content: uniqueVideos },
+        { type: "link", content: uniqueLinks },
         ...prev,
-        // { type: "generated", content: contentResponse.data.generatedContent },
       ]);
 
-      // Update the log
       uniqueVideos.forEach((video) => updateContentLog("video", video.url));
       uniqueLinks.forEach((link) => updateContentLog("link", link.url));
-      updateContentLog("generated", "I've told you all I know about this!");
-
-      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching content:", error);
-      setIsLoading(false);
       setConversation((prev) => [
         ...prev,
         { type: "error", content: "An error occurred while fetching content." },
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -109,11 +93,6 @@ const IntegratedComponent = () => {
             <Message key={index} message={m} />
           ))}
         </div>
-        <InputArea
-          userInput={userInput}
-          setUserInput={setUserInput}
-          sendMessage={() => sendMessage(userInput)}
-        />
       </div>
     </div>
   );

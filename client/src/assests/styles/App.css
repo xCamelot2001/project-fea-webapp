@@ -52,11 +52,6 @@ nav a:hover {
   width: 60%;
 }
 
-/* Input Area Styles */
-.input-area {
-  display: flex;
-}
-
 /* ChatBox Styles */
 .chatbox-container {
   padding: 1rem;
